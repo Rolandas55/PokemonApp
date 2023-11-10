@@ -74,32 +74,24 @@ class TableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell", for: indexPath) as! PokemonTableViewCell
-
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonCell", for: indexPath) as? PokemonTableViewCell else {
+            return UITableViewCell()
+        }
         let pokemon = pokey[indexPath.row]
-        
-        switch pokemon.supertype {
-        case "Energy":
-            cell.backgroundColor = UIColor.systemGreen
-        case "Trainer":
-            cell.backgroundColor = UIColor.systemGray
-        case "Pokémon":
-            cell.backgroundColor = UIColor.systemBlue
-        default:
-            print("unknown type found")
-        }
-        
-        cell.pokName.text = pokemon.name
-        cell.pokType.text = pokemon.supertype
-        if let num = pokemon.nationalPokedexNumber {
-            cell.pokDexNumber.text = ("National pokedex number:\(String(num))")
-        }
-
+        cell.setupUI(withDataFrom: pokemon)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+        return 215
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            let detailVC = DetailViewController()
+            detailVC.pokemon = pokey[indexPath.row]
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
     }
 
     /*

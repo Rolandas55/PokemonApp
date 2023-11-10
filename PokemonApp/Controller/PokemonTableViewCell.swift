@@ -6,8 +6,15 @@
 //
 
 import UIKit
+import SDWebImage
 
 class PokemonTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var pokeyImageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var supertypeLabel: UILabel!
+    @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var hpLabel: UILabel!
     
     let pokName = UILabel()
     let pokType = UILabel()
@@ -17,7 +24,7 @@ class PokemonTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        setupView()
+        //setupView()
     }
     
     func setupView() {
@@ -50,6 +57,13 @@ class PokemonTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setupUI(withDataFrom: Card) {
+        nameLabel.text = "Name: " + withDataFrom.name
+        hpLabel.text = "Health points: " + (withDataFrom.hp ?? "0")
+        supertypeLabel.text = (withDataFrom.supertype ?? "")
+        pokeyImageView.sd_setImage(with: URL(string: withDataFrom.imageURL))
     }
 
 }
